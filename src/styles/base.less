@@ -1,7 +1,38 @@
+#container {
+  height: 100%;
+}
 #navbar {
   background: #223343;
   height: 64px;
+  line-height: 64px;
+  .brand {
+    padding: 0 10px;
+    color: white;
+    .brand-text {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+  }
+  .user-info {
+    display: flex;
+    justify-content: center;
+    li {
+      height: 20px;
+      padding-right: 10px;
+      color: white;
+      font-size: 14px;
+      &:nth-child(2) {
+        a {
+          padding-right: 10px;
+          border-right: 2px solid white;
+        }
+      }
+    } 
+  }
 }
-.brand {
-  padding: 0 10px;
+#side-bar {
+  height: 100%;
+  .ant-layout-sider {
+    height: 100%;
+  }
 }

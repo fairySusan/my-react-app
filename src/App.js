@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import { message, LocaleProvider } from 'antd';
+import { message, LocaleProvider, Layout } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import Header from './componets/Header';
+import SiderBar from './componets/siderBar';
 
 export default class App extends Component {
   constructor(props) {
@@ -11,9 +12,10 @@ export default class App extends Component {
   render() {
     return (
       <LocaleProvider locale={zhCN}>
-        <div id="container">
+        <Layout id="container">
           <Header></Header>
-        </div>
+          <SiderBar></SiderBar>
+        </Layout>
       </LocaleProvider>
     )
   }
