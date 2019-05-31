@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
-import { message, LocaleProvider, Layout } from 'antd';
-import zhCN from 'antd/lib/locale-provider/zh_CN';
-import Header from './componets/Header';
-import SiderBar from './componets/siderBar';
+import {BrowserRouter as Router,Route} from 'react-router-dom';
+import Home from './home';
+import Login from './views/login';
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
     return (
-      <LocaleProvider locale={zhCN}>
-        <Layout id="container">
-          <Header></Header>
-          <SiderBar></SiderBar>
-        </Layout>
-      </LocaleProvider>
+      <Router>
+        <Route path="/" exact component={Home}></Route>
+        <Route path="/login"  component={Login}></Route>
+      </Router>
     )
   }
 }

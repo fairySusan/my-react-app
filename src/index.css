@@ -12,9 +12,14 @@ body {
 }
 
 code {
+  font-size: 12px;
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 #root {
+  height: 100%;
+}
+.content {
+  overflow: scroll;
   height: 100%;
 }

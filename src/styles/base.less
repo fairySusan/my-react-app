@@ -1,5 +1,8 @@
 #container {
   height: 100%;
+  #sub-container {
+    flex-direction: row;
+  }
 }
 #navbar {
   background: #223343;
@@ -30,9 +33,22 @@
     } 
   }
 }
+.side-bar {
+  width: 150px;
+  height: 100%;
+}
+.mini-side-bar {
+  width: 80px;
+}
 #side-bar {
   height: 100%;
+  .ant-menu-dark .ant-menu-item {
+    color: white;
+  }
   .ant-layout-sider {
     height: 100%;
+    .ant-menu-dark {
+      color: white;
+    }
   }
 }
