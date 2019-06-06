@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import {BrowserRouter as Router,Route, Switch, Redirect, withRouter} from 'react-router-dom';
 import Home from './home';
+import { connect } from 'react-redux'
 import Login from './views/login';
 
 class App extends Component {
 
   render() {
-    const isLogin = sessionStorage.getItem('userInfo') ? true : false;
-    console.log(isLogin, 'ssss');
+    const isLogin = this.props.profile ? true : false;
     return (
       <Router>
         <Switch>
@@ -23,4 +23,7 @@ class App extends Component {
     )
   }
 }
-export default withRouter(App);
+const mapStateToProps = state => {
+  return { profile: state.profile }
+}
+export default withRouter(connect(mapStateToProps)(App));

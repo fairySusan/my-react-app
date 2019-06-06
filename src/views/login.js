@@ -19,8 +19,7 @@ class login extends Component {
       if (!err) {
         api.login(values).then(res => {
           this.props.dispatch(setProfile(res.data));
-          console.log('runrun');
-          this.props.history.replace('/');
+          this.props.history.replace('/')
         })
       }
     });
@@ -72,11 +71,5 @@ class login extends Component {
     )
   }
 }
-const mapStateToProps = state => {
-  return {...state};
-};
-const mapDispatchToProps = (dispatch, ownProps) => ({
-})
-const loginComponent = Form.create()(withRouter(connect(mapStateToProps, mapDispatchToProps)(login)));
 
-export default loginComponent;
+export default Form.create()(withRouter(connect()(login)));
