@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import {Row, Col } from 'antd';
+import { connect } from 'react-redux'
+import { clearProfile } from '../redux/actions/index';
 import logoIcon from '../images/logo.png';
 import userIcon from '../images/user.png';
-export default class Header extends Component {
+class Header extends Component {
+  loginOut = () => {
+    this.props.dispatch(clearProfile())
+  }
   render() {
     return (
       <header id="navbar">
@@ -23,7 +28,7 @@ export default class Header extends Component {
                   <a>管理员</a>
                 </li>
                 <li>
-                  <a>退出</a>
+                  <a onClick={this.loginOut} href="/login">退出</a>
                 </li>
               </ul>
             </Col>
@@ -33,3 +38,4 @@ export default class Header extends Component {
     )
   }
 }
+export default connect()(Header);

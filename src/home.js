@@ -9,7 +9,8 @@ import Profile from './views/profile';
 import UserManange from './views/user-manage';
 import socketPage from './views/socket';
 
-export default class App extends Component {
+
+class Home extends Component {
   render() {
     return (
       <LocaleProvider locale={zhCN}>
@@ -32,3 +33,4 @@ export default class App extends Component {
     )
   }
 }
+export default Home;
