@@ -12,12 +12,14 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route path="/" exact render={() => (
+          <Route path="/login" component={Login}></Route> 
+          <Route path="/" component={Home} render= {() => (
             isLogin ? (
-              <Home/>
-            ) : (<Redirect to='/login'/>)
+              <Home></Home>
+            ) : (
+              <Redirect to="/login"></Redirect>
+            )
           )}></Route>
-          <Route path="/login"  component={Login}></Route>
         </Switch>
       </Router>
     )

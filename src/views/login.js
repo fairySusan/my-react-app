@@ -9,8 +9,8 @@ class login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: ''
+      username: 'susan',
+      password: 123456
     }
   }
   loginSubmit = (e) => {
@@ -33,7 +33,7 @@ class login extends Component {
         <div className="login-form">
           <Form>
             <Form.Item>
-              {getFieldDecorator('username', {
+              {getFieldDecorator('username', { initialValue: 'susan' }, {
                 rules: [
                   {require:true, min: 4, max: 10, message: '用户名为4-10个字符'},
                   {pattern: regExpConfig.policeNo, message: '账号由4-10位数字或字母组成'}
@@ -47,7 +47,7 @@ class login extends Component {
             </Form.Item>
             <Form.Item>
               {
-                getFieldDecorator('password', {
+                getFieldDecorator('password', { initialValue: 123456 }, {
                   rules: [
                     {require: true, message: '请输入密码'},
                     {pattern: regExpConfig.pwd, message: '密码由6-10位数字或字母组成'}

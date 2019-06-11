@@ -25,9 +25,13 @@
       color: white;
       font-size: 14px;
       &:nth-child(2) {
-        a {
+        span {
           padding-right: 10px;
           border-right: 2px solid white;
+          &:hover {
+            color: #1890ff;
+            cursor: default;
+          }
         }
       }
     } 
@@ -49,6 +53,14 @@
     height: 100%;
     .ant-menu-dark {
       color: white;
+    }
+  }
+}
+#user-info {
+  .user-info {
+    .changePwd {
+      display: flex;
+      justify-content: space-around;
     }
   }
 }

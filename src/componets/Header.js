@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import {Row, Col } from 'antd';
 import { connect } from 'react-redux'
-import { clearProfile } from '../redux/actions/index';
+import { clearProfile, openUserInfo} from '../redux/actions/index';
 import logoIcon from '../images/logo.png';
 import userIcon from '../images/user.png';
 class Header extends Component {
   loginOut = () => {
     this.props.dispatch(clearProfile())
+  }
+  showProfile = () => {
+    this.props.dispatch(openUserInfo())
   }
   render() {
     return (
@@ -25,7 +28,7 @@ class Header extends Component {
                   <img src={userIcon} alt="管理员"/>
                 </li>
                 <li>
-                  <a>管理员</a>
+                  <span onClick={this.showProfile}>管理员</span>
                 </li>
                 <li>
                   <a onClick={this.loginOut} href="/login">退出</a>

@@ -10,3 +10,10 @@ export const getMockData = () => {
 export const login = (params) => {
     return http.post('/login', params);
 }
+/**
+ *@params {*} username 用户名
+ *@params {*} password 密码
+ */
+export const getUserList = () => {
+    return http.get('/mock/usermanage/getUserList')
+}

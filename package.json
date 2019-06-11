@@ -138,6 +138,7 @@
   },
   "devDependencies": {
     "express": "^4.17.1",
+    "react-hot-loader": "^4.11.0",
     "react-router-dom": "^5.0.0"
   }
 }

@@ -7,6 +7,7 @@ import Header from './componets/Header';
 import SiderBar from './componets/siderBar';
 import Profile from './views/profile';
 import UserManange from './views/user-manage';
+import UserInfo from './componets/UserInfo';
 import socketPage from './views/socket';
 
 
@@ -26,6 +27,7 @@ class Home extends Component {
                     <Route path="/set/userManage" component={UserManange}></Route>
                   </div>
               </Layout>
+              <UserInfo></UserInfo>
             </Layout>
           </Router>
         </Layout>

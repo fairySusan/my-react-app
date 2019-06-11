@@ -2,3 +2,4 @@
 @import '~antd/dist/antd.css';
 @import './styles/base.less';
 @import './styles/login.less';
+@import './styles/userManage.less';

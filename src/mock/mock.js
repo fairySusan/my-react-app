@@ -6,3 +6,14 @@ Mock.mock('http://127.0.0.1:3001/getMockData', 'get', {   // 第二个参数要�
         'name': Random.cname()
     }]
 })
+
+Mock.mock('http://127.0.0.1:3001/mock/usermanage/getUserList', {
+    'list|25': [{
+        'id|+1':1,
+        'name': Random.cname(),
+        'position': '销售',
+        'acount': Random.word(),
+        'acount_state': Random.boolean(), // true=> 正常 false=>已冻结
+        'role': '超级管理员',
+    }]
+})
