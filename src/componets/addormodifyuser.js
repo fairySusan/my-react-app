@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux'
 import { Drawer, Form, Input, Select, Button } from "antd";
-import { closeUserInfoModal } from '../redux/actions/index';
 const { Option } = Select;
 class userInfoModal extends Component {
   onClose = () => {
-    this.props.dispatch(closeUserInfoModal())
+    this.props.visible = false;
+    // this.props.dispatch(closeUserInfoModal())
   }
   renderOptions = () => {
     const options = [{
@@ -44,7 +43,7 @@ class userInfoModal extends Component {
         placement="right"
         width={400}
         closable={false}
-        onClose={this.onClose}
+        onClose={() => this.props.onClick()}
         visible={this.props.visible}>
           <Form {...formItemLayout}>
             <Form.Item label="姓名">
@@ -156,10 +155,10 @@ class userInfoModal extends Component {
             background: '#fff',
             textAlign: 'right',
           }}>
-            <Button onClick={this.onClose} style={{ marginRight: 8 }}>
+            <Button onClick={() => this.props.onClick()} style={{ marginRight: 8 }}>
               取消
             </Button>
-            <Button onClick={this.onClose} type="primary">
+            <Button onClick={() => this.props.onClick()} type="primary">
               确认
             </Button>
           </div>
@@ -168,7 +167,4 @@ class userInfoModal extends Component {
     )
   }
 }
-const mapStateToProps = state => {
-  return { visible: state.showUserInfoModal }
-}
-export default Form.create()(connect(mapStateToProps)(userInfoModal));
+export default Form.create()(userInfoModal);

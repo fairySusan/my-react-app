@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Tree, Input, Table, Divider, Button, Pagination } from 'antd';
-import { openUserInfoModal } from '../redux/actions/index';
+import { Row, Col, Tree, Input, Table, Divider, Button, Spin } from 'antd';
 import { connect } from 'react-redux'
 import AddorModifyUser from '../componets/addormodifyuser';
 import * as mockApi from '../apis/mockApi';
@@ -10,16 +9,26 @@ class UserManange extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableData: []
+      tableData: [],
+      loading: true,
+      showModal: false
     }
   }
   showUserInModal = () => {
-    this.props.dispatch(openUserInfoModal())
+    this.setState({
+      showModal: true,
+    });
+  }
+  closeUserInfoModal = () => {
+    this.setState({
+      showModal: false
+    })
   }
   componentDidMount() {
     mockApi.getUserList().then(res => {
       this.setState({
-        tableData: res.data.list
+        tableData: res.data.list,
+        loading: false
       })
     })
   }
@@ -65,9 +74,9 @@ class UserManange extends Component {
         render: (text, record) => {
           return (
             <span>
-              <a href="javascript:;">详情</a>
+              <a href="javascript:;" style={{color: '#1890ff'}}>详情</a>
               <Divider type="vertical"></Divider>
-              <a href="javascript:;">冻结账户</a>
+              <a href="javascript:;" style={{color: '#1890ff'}}>冻结账户</a>
             </span>
           )
         }
@@ -75,7 +84,8 @@ class UserManange extends Component {
     ]
     return (
     <div id="user-manage">
-      <AddorModifyUser></AddorModifyUser>
+     <Spin id="loading" tip="Loading..." spinning={this.state.loading}/>
+      <AddorModifyUser visible={this.state.showModal} onClick={this.closeUserInfoModal}></AddorModifyUser>
       <Row id="user-manage-content">
         <Col span={3} id="col-left">
           <div className="left">

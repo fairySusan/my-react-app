@@ -1,4 +1,4 @@
-import {CLEAR_PROFILE, SET_PROFILE, OPEN_USER_INFO, CLOSE_USER_INFO, OPEN_USER_INFO_MODAL, CLOSE_USER_INFO_MODAL} from '../constants';
+import {CLEAR_PROFILE, SET_PROFILE, OPEN_USER_INFO, CLOSE_USER_INFO} from '../constants';
 export default {
   profile (state = null, action) {
     switch (action.type) {
@@ -27,14 +27,4 @@ export default {
         return false;
     }
   },
-  showUserInfoModal (state = false, action) {
-    switch (action.type) {
-      case OPEN_USER_INFO_MODAL:
-        return true;
-      case CLOSE_USER_INFO_MODAL:
-        return false;
-      default:
-        return false;
-    }
-  }
 }
