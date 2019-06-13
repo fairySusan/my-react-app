@@ -16,13 +16,13 @@ class Header extends Component {
       <header id="navbar">
         <div id="navbar-container" className="boxed">
           <Row>
-            <Col span={22}>
+            <Col span={21}>
               <div className="brand">
                 <img className="brand-logo" src={logoIcon} alt="logo" width="40" height="29"/>
                 <span className="brand-text">R e a c t</span>
               </div>
             </Col>
-            <Col span={2}>
+            <Col span={3}>
               <ul className="user-info">
                 <li>
                   <img src={userIcon} alt="管理员"/>

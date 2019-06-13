@@ -5,6 +5,7 @@ import * as regExpConfig from '../config/regExp';
 import * as api from '../apis/mockApi';
 import { connect } from 'react-redux'
 import {setProfile} from '../redux/actions/index';
+import Logo from '../componets/logo/logo';
 class login extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +30,9 @@ class login extends Component {
     return (
       <div id="login-page">
         <div className="react-bg">
+          <div className="react">
+            <Logo/>
+          </div>
         </div>
         <div className="login-form">
           <Form>

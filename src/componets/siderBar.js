@@ -38,32 +38,32 @@ class siderBar extends Component {
       {
         label: '图表',
         key: '/icon',
-        icon: 'inbox'
+        icon: 'area-chart'
       },
       {
         label: '编辑器',
         key: '/editor',
-        icon: 'inbox'
+        icon: 'edit'
       },
       {
         label: '设置中心',
         key: 'set',
-        icon: 'mail',
+        icon: 'setting',
         children: [
           {
             label: '用户管理',
             key: '/userManage',
-            icon: 'inbox'
+            icon: 'team'
           },
           {
             label: '角色管理',
             key: '/roleManange',
-            icon: 'inbox'
+            icon: 'user-add'
           },
           {
             label: '权限管理',
             key: '/authManage',
-            icon: 'inbox'
+            icon: 'appstore'
           }
         ]
       }
@@ -84,7 +84,7 @@ class siderBar extends Component {
           key={item1.key}
           title={
             <span>
-              <Icon type="mail" />
+              <Icon type="setting" />
               <span>设置中心</span>
             </span>
           }
