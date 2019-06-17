@@ -3,15 +3,15 @@ export default {
   profile (state = null, action) {
     switch (action.type) {
       case SET_PROFILE:
-        localStorage.setItem("token", JSON.stringify(action.token));
-        localStorage.setItem('profile', JSON.stringify(action.profile));
+        sessionStorage.setItem("token", JSON.stringify(action.token));
+        sessionStorage.setItem('profile', JSON.stringify(action.profile));
         return {
           token: action.token,
           profile: action.profile
         };
       case CLEAR_PROFILE:
-        localStorage.removeItem('profile');
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('profile');
+        sessionStorage.removeItem('token');
         return null;
       default:
       return state;

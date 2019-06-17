@@ -37,7 +37,7 @@ class siderBar extends Component {
       },
       {
         label: '图表',
-        key: '/icon',
+        key: '/chart',
         icon: 'area-chart'
       },
       {

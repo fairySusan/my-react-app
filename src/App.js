@@ -8,12 +8,13 @@ import Login from './views/login';
 class App extends Component {
 
   render() {
-    const isLogin = this.props.profile ? true : false;
+    const isLogin = sessionStorage.getItem('token') ? true : false;
+    console.log(isLogin);
     return (
       <Router>
         <Switch>
-          <Route path="/login" component={Login}></Route> 
-          <Route path="/" component={Home} render= {() => (
+          <Route path="/login" exact component={Login}></Route> 
+          <Route path="/" render= {() => (
             isLogin ? (
               <Home></Home>
             ) : (
