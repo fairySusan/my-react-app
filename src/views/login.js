@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Icon, Button } from 'antd';
+import { Form, Input, Icon, Button, message } from 'antd';
 import { withRouter } from 'react-router-dom';
 import * as regExpConfig from '../config/regExp';
 import * as api from '../apis/mockApi';
@@ -19,8 +19,12 @@ class login extends Component {
     this.props.form.validateFields((err,values) => {
       if (!err) {
         api.login(values).then(res => {
-          this.props.dispatch(setProfile(res.data));
-          this.props.history.replace('/')
+          if (res.succeed) {
+            this.props.dispatch(setProfile(res.data));
+            this.props.history.replace('/')
+          } else {
+            message.error(res.message);
+          }
         })
       }
     });

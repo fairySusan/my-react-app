@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Row, Col, Tree, Input, Table, Divider, Button, Spin } from 'antd';
 import { connect } from 'react-redux'
 import AddorModifyUser from '../componets/addormodifyuser';
-import * as mockApi from '../apis/mockApi';
 const { TreeNode } = Tree;
 const Search = Input.Search;
 class UserManange extends Component {
@@ -25,12 +24,6 @@ class UserManange extends Component {
     })
   }
   componentDidMount() {
-    mockApi.getUserList().then(res => {
-      this.setState({
-        tableData: res.data.list,
-        loading: false
-      })
-    })
   }
 
   render() {

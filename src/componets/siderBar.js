@@ -31,9 +31,31 @@ class siderBar extends Component {
         icon: 'pie-chart'
       },
       {
-        label: 'socket接收',
-        key: '/socket',
-        icon: 'desktop'
+        label: '数据管理',
+        key: 'manage',
+        icon: 'desktop',
+        children: [
+          {
+            label: '商家列表',
+            key: '/shop',
+            icon: 'appstore'
+          },
+          {
+            label: '用户列表',
+            key: '/user',
+            icon: 'appstore'
+          },
+          {
+            label: '食品列表',
+            key: '/food',
+            icon: 'appstore'
+          },
+          {
+            label: '订单列表',
+            key: '/order',
+            icon: 'appstore'
+          },
+        ]
       },
       {
         label: '图表',
@@ -85,7 +107,7 @@ class siderBar extends Component {
           title={
             <span>
               <Icon type="setting" />
-              <span>设置中心</span>
+              <span>{item1.label}</span>
             </span>
           }
           >
@@ -93,7 +115,7 @@ class siderBar extends Component {
               item1.children.map((item2, index) => {
                 return (
                   <Menu.Item key={item2.key}>
-                  <Link to={`/set${item2.key}`}>
+                  <Link to={`/${item1.key}${item2.key}`}>
                     <Icon type={item2.icon} />
                     <span>{item2.label}</span>
                   </Link>

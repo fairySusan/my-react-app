@@ -31,6 +31,12 @@ http.interceptors.response.use(res => {
   result.status = res.status;
   result.headers = res.headers; // response header
   result.data = res.data;
+  if (res.status >= 200 && res.status <= 300) {
+    result.succeed = true;
+  }
+  if (res.status >= 400 && res.status <= 500) {
+    result.message = res.data.message;
+  }
   return result;
 }, err => {
   return Promise.reject(err);

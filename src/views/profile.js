@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as mockApi from '../apis/mockApi';
 
 export default class Profile extends Component {
     constructor(props) {
@@ -9,14 +8,6 @@ export default class Profile extends Component {
       }
     }
     componentDidMount() {
-      this.getMockData();
-    }
-    getMockData = () => {
-      mockApi.getMockData().then(res => {
-        this.setState({
-          mockData: res
-        })
-      })
     }
     render() {
       return (
