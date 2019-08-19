@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Drawer, Button, Avatar, List } from 'antd'
+import { Drawer, Avatar, List } from 'antd'
 import { connect } from 'react-redux'
 import { closeUserInfo} from '../redux/actions/index';
 class userInfo extends Component {

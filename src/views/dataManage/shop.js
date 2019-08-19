@@ -21,6 +21,9 @@ export default class ShopPage extends Component {
             data.push({
               key: index,
               name: element.name,
+              address: element.address,
+              city: element.city,
+              phone: element.phone
             })
           });
         }
@@ -30,11 +33,14 @@ export default class ShopPage extends Component {
       }
     })
   }
+  deleteShop = (id) => {
+    console.log('删除');
+  }
   contrlModal = (visible) => {
     this.setState({showModal: visible});
   }
   render() {
-    const columns = Columns.shopCol();
+    const columns = Columns.shopCol(this);
     const { tableData } = this.state;
     return (
       <div id="shop-content">

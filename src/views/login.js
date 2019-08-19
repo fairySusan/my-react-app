@@ -11,7 +11,7 @@ class login extends Component {
     super(props);
     this.state = {
       username: 'susan',
-      password: 123456
+      password: 199632
     }
   }
   loginSubmit = (e) => {
@@ -55,7 +55,7 @@ class login extends Component {
             </Form.Item>
             <Form.Item>
               {
-                getFieldDecorator('password', { initialValue: 123456 }, {
+                getFieldDecorator('password', { initialValue: 199632 }, {
                   rules: [
                     {require: true, message: '请输入密码'},
                     {pattern: regExpConfig.pwd, message: '密码由6-10位数字或字母组成'}

@@ -13,3 +13,9 @@ export const login = (params) => {
 export const getShopList = () => {
     return http.get(`/shopping/restaurants?time=${new Date().getTime()}`)
 }
+/**
+ * 添加商铺
+ */
+export const addShop = (params) => {
+    return http.post('/shopping/addRestaurants', params)
+}

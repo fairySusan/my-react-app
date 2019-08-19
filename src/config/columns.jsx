@@ -1,35 +1,37 @@
 import React, { Component } from 'react';
-import { Divider, Tag } from 'antd';
 
 class Column extends Component {
   constructor() {
     super();
     // 商家列表表头配置
-    this.shopCol = () =>([
+    this.shopCol = (ctx) =>([
       {
         title: '商家名称',
         dataIndex: 'name',
         key: 'name',
         render: text => <a href="javascript:;">{text}</a>,
       },
-      // {
-      //   title: '商家地址',
-      //   dataIndex: 'address',
-      //   key: 'address',
-      // },
-      // {
-      //   title: '商家详情',
-      //   dataIndex: 'address',
-      //   key: 'address',
-      // },
+      {
+        title: '所在城市',
+        dataIndex: 'city',
+        key: 'city',
+      },
+      {
+        title: '详细地址',
+        dataIndex: 'address',
+        key: 'address',
+      },
+      {
+        title: '联系电话',
+        dataIndex: 'phone',
+        key: 'phone',
+      },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <span>
-            <a href="javascript:;">Invite {record.name}</a>
-            <Divider type="vertical" />
-            <a href="javascript:;">删除</a>
+            <button onClick={ctx.deleteShop}>删除</button>
           </span>
         ),
       },
