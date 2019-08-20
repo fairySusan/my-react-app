@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Button} from 'antd';
 
 class Column extends Component {
   constructor() {
@@ -31,7 +32,8 @@ class Column extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <button onClick={ctx.deleteShop}>删除</button>
+            <Button type="primary" onClick={(e) => ctx.deleteShop(record['key'], e)}>删除</Button>
+            <Button type="primary" onClick={(e) => ctx.addFood(record['key'], e)}>添加食品</Button>
           </span>
         ),
       },

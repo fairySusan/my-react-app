@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { Modal, Form, Input, Select, Checkbox, InputNumber, TimePicker, Upload, message, Icon } from 'antd';
-import { addShop } from '../apis/mockApi';
+import { Modal, Form, Input, Select, Checkbox, InputNumber, TimePicker, Upload, message, Icon, Button } from 'antd';
 const { Option } = Select;
+let fileList = [];
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
@@ -11,13 +11,16 @@ function getBase64(img, callback) {
 function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
+    message.error('只允许上传JPG/PNG格式');
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('图片大小必须小于2MB!');
   }
-  return isJpgOrPng && isLt2M;
+  if (isJpgOrPng && isLt2M) {
+    fileList.push(file);
+  }
+  return false;
 }
 class ShopModal extends Component {
   constructor() {
@@ -56,20 +59,17 @@ class ShopModal extends Component {
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
       if (!err) {
-        addShop(values).then(res => {
-
-        })
+        const formData = new FormData();
+        const f = fileList.pop();
+        formData.append('file', f);
+        for(let i in values) {
+          formData.append(i, values[i])
+        }
+        this.props.onAdd(formData);
       }
     });
   }
   render() {
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-    const { imageUrl } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -167,7 +167,7 @@ class ShopModal extends Component {
                 {
                   categoryOptions.map(item => {
                     return (
-                      <Option value={item.value}>{item.label}</Option>
+                      <Option value={item.value} key={item.value}>{item.label}</Option>
                     )
                   })
                 }
@@ -177,7 +177,7 @@ class ShopModal extends Component {
           </Form.Item>
           <Form.Item label="店铺特点">
             {
-              getFieldDecorator('featrue', { initialValue: [8] })(
+              getFieldDecorator('feature', { initialValue: [8] })(
                 <Checkbox.Group options={plainOptions} onChange={this.onChange} />
               )
             }
@@ -196,13 +196,14 @@ class ShopModal extends Component {
               )
             }
           </Form.Item>
-          <Form.Item label="营业时间">
+          <Form.Item label="营业开始时间">
             {
               getFieldDecorator('opening_hours', { initialValue: moment('00:00:00', 'HH:mm:ss') })(
                 <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}/>
               )
             }
-            到
+          </Form.Item>
+          <Form.Item label="营业结束时间">
             {
               getFieldDecorator('closing_hours', { initialValue: moment('00:00:00', 'HH:mm:ss') })(
                 <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}/>
@@ -210,21 +211,16 @@ class ShopModal extends Component {
             }
           </Form.Item>
           <Form.Item label="上传店铺头像">
-            {
-              getFieldDecorator('shop_avtar')(
-                <Upload
-                name="avatar"
-                listType="picture-card"
-                className="avatar-uploader"
-                showUploadList={false}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                beforeUpload={beforeUpload}
-                onChange={this.handleChange}
+            <Upload
+              name="file"
+              className="avatar-uploader"
+              beforeUpload={beforeUpload}
+              onChange={this.handleChange}
               >
-              {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-              </Upload>
-              )
-            }
+              <Button>
+                <Icon type="upload" /> 选择图片
+              </Button>
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>
