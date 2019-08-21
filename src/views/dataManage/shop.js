@@ -9,6 +9,7 @@ export default class ShopPage extends Component {
     super(props);
     this.state = {
       tableData: [],
+      currItem: {},
       showShopModal: false,
       showFoodModal: false
     }
@@ -25,7 +26,14 @@ export default class ShopPage extends Component {
               name: element.name,
               address: element.address,
               city: element.city,
-              phone: element.phone
+              phone: element.phone,
+              feature: element.feature,
+              image_path: element.image_path,
+              category: element.category,
+              opening_hours: element.opening_hours,
+              closing_hours: element.closing_hours,
+              float_delivery_fee: element.float_delivery_fee,
+              float_minimum_order_amount: element.float_minimum_order_amount
             })
           });
         }
@@ -45,22 +53,45 @@ export default class ShopPage extends Component {
       }
     })
   }
-  addShop = (params) => {
-    Api.addShop(params).then(res => {
-      if(res.succeed) {
-        message.success(res.data.message);
-        this.getShopList();
-      } else {
-        message.error(res.message);
-      }
-      this.setState({showShopModal: false});
-    })
+  submitShopForm = (params) => {
+    if (params.key) {
+      Api.modifyShop(params).then(res => {
+        console.log(res);
+      })
+    } else {
+      Api.addShop(params).then(res => {
+        if(res.succeed) {
+          message.success(res.data.message);
+          this.getShopList();
+        } else {
+          message.error(res.message);
+        }
+        this.setState({showShopModal: false});
+      }).catch(err => {
+        message.error('服务器出错');
+        this.setState({showShopModal: false});
+      })
+    }
   }
   addFood = (params) => {
     this.setState({showFoodModal: true});
   }
-  contrlModal = (visible) => {
-    this.setState({showShopModal: visible});
+  addOrModifyModal = (option, id) => {
+    this.setState({
+      currItem: {}
+    })
+    this.setState({showShopModal: true});
+    if(option === 'modify') {
+      const currItem = this.state.tableData.find(item => {
+        return item['key'] === id;
+      })
+      this.setState({
+        currItem: currItem
+      })
+    }
+  }
+  onClose = () => {
+    this.setState({showShopModal: false});
   }
   contrlFoodModal = (visible) => {
     this.setState({showFoodModal: visible});
@@ -71,11 +102,11 @@ export default class ShopPage extends Component {
     return (
       <div id="shop-content">
         <div className="opt-box clearfix">
-          <Button type="primary" className="add-btn" onClick={(e) => this.contrlModal(true, e)}>新增</Button>
+          <Button type="primary" className="add-btn" onClick={(e) => this.addOrModifyModal('add', e)}>新增</Button>
         </div>
         <Table columns={columns} dataSource={tableData}>
         </Table>
-        <ShopModal visible={this.state.showShopModal} onClose={(e) => this.contrlModal(false, e)} onAdd={this.addShop}></ShopModal>
+        <ShopModal visible={this.state.showShopModal} onClose={this.onClose} submitShopForm={this.submitShopForm} currItem={this.state.currItem}></ShopModal>
         <FoodModal visible={this.state.showFoodModal} onClose={(e) => this.contrlFoodModal(false, e)}></FoodModal>
       </div>
     )

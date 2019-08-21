@@ -25,3 +25,9 @@ export const addShop = (params) => {
 export const deleteShop = (id) => {
     return http.get(`/shopping/deleteRestaurants?id=${id}`)
 }
+/**
+ * 更新商铺
+ */
+export const modifyShop = (params) => {
+    return http.post(`/shopping/modifyRestaurants`, params)
+}
