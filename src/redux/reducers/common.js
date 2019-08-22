@@ -3,7 +3,7 @@ export default {
   profile (state = null, action) {
     switch (action.type) {
       case SET_PROFILE:
-        sessionStorage.setItem("token", JSON.stringify(action.token));
+        sessionStorage.setItem("token", action.token);
         sessionStorage.setItem('profile', JSON.stringify(action.profile));
         return {
           token: action.token,

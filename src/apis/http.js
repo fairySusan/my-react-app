@@ -12,7 +12,7 @@ const CancelToken = axios.CancelToken;
 // 拦截请求
 http.interceptors.request.use(config => {
   if (sessionStorage.token) {
-    config.headers.Authorization = `JWT ${sessionStorage.token}`; // jwt 验证
+    config.headers.Authorization = sessionStorage.token; // jwt 验证
   }
 
   // 对每个请求添加取消标识，便于页面跳转是取消请求
