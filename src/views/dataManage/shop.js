@@ -18,27 +18,13 @@ export default class ShopPage extends Component {
   getShopList = () => {
     Api.getShopList().then(res => {
       if(res.succeed) {
-        let data = [];
         if (res.data.length > 0) {
           res.data.forEach((element,index) => {
-            data.push({
-              key: element._id,
-              name: element.name,
-              address: element.address,
-              city: element.city,
-              phone: element.phone,
-              feature: element.feature,
-              image_path: element.image_path,
-              category: element.category,
-              opening_hours: element.opening_hours,
-              closing_hours: element.closing_hours,
-              float_delivery_fee: element.float_delivery_fee,
-              float_minimum_order_amount: element.float_minimum_order_amount
-            })
+            element.key = index;
           });
         }
         this.setState({
-          tableData: data
+          tableData: res.data
         })
       }
     })
@@ -53,10 +39,19 @@ export default class ShopPage extends Component {
       }
     })
   }
-  submitShopForm = (params) => {
-    if (params.key) {
+  submitShopForm = (params, isModify) => {
+    if (isModify) {
       Api.modifyShop(params).then(res => {
-        console.log(res);
+        if(res.succeed) {
+          message.success(res.data.message);
+          this.getShopList();
+        } else {
+          message.error(res.message);
+        }
+        this.setState({showShopModal: false});
+      }).catch(err => {
+        message.error('服务器出错');
+        this.setState({showShopModal: false});
       })
     } else {
       Api.addShop(params).then(res => {
@@ -76,14 +71,14 @@ export default class ShopPage extends Component {
   addFood = (params) => {
     this.setState({showFoodModal: true});
   }
-  addOrModifyModal = (option, id) => {
+  addOrModifyModal = (option, key) => {
     this.setState({
       currItem: {}
     })
     this.setState({showShopModal: true});
     if(option === 'modify') {
       const currItem = this.state.tableData.find(item => {
-        return item['key'] === id;
+        return item['key'] === key;
       })
       this.setState({
         currItem: currItem

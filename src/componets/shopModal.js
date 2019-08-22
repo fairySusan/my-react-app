@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import baseUrl from '../local_config';
-import { Modal, Form, Input, Select, Checkbox, InputNumber, TimePicker, Upload, message, Icon, Button } from 'antd';
+import { Modal, Form, Input, Select, Checkbox, InputNumber, TimePicker, Upload, message, Icon, Button, Row, Col } from 'antd';
+import { stringify } from 'querystring';
 const { Option } = Select;
 let fileList = [];
 
@@ -35,11 +36,13 @@ class ShopModal extends Component {
       isModify: false
     }
   }
+  // 接受props
   componentDidUpdate(oldProps) {
     if(oldProps.currItem !== this.props.currItem) {
       const data = this.props.currItem;
+      console.log('data', data);
       this.resetForm();
-      if (data.key) {
+      if (JSON.stringify(data) !== '{}') {
         this.setState({
           imageUrl: baseUrl + data.image_path,
           isModify: true
@@ -61,6 +64,7 @@ class ShopModal extends Component {
     }
   }
   resetForm = () => {
+    fileList = [];
     this.props.form.resetFields();
     this.setState({
       imageUrl: '',
@@ -96,10 +100,12 @@ class ShopModal extends Component {
         const formData = new FormData();
         const f = fileList.pop();
         formData.append('file', f);
+        formData.append('image_path',this.props.currItem.image_path);
+        formData.append('_id', this.props.currItem._id)
         for(let i in values) {
           formData.append(i, values[i])
         }
-        this.props.submitShopForm(formData);
+        this.props.submitShopForm(formData, this.state.isModify);
       }
     });
   }
@@ -108,11 +114,11 @@ class ShopModal extends Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 6 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
+        sm: { span: 18 },
       },
       hideRequiredMark: false
     };
@@ -136,118 +142,159 @@ class ShopModal extends Component {
       <Modal
         title={isModify ? '修改店铺' : '新增店铺'}
         width={800}
+        wrapClassName="shopModal"
         visible={this.props.visible}
         onOk={this.onSubmit}
         onCancel={() => this.props.onClose()}>
         <Form
           {...formItemLayout}
         >
-          <Form.Item label="店铺名称">
-            {
-              getFieldDecorator('name', {
-                rules: [{require: true, message: '请输入店铺名称'}]
-              })(
-                <Input
-                  placeholder="请输入店铺名称"
-                ></Input>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="所在城市">
-            {
-              getFieldDecorator('city', {
-                rules: [{require: true, message: '请输入店铺所在城市'}]
-              })(
-                <Input
-                  placeholder="请输入店铺所在城市"
-                ></Input>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="详细地址">
-            {
-              getFieldDecorator('address', {
-                rules: [{require: true, message: '请输入店铺详细地址'}]
-              })(
-                <Input
-                  placeholder="请输入店铺详细地址"
-                ></Input>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="联系电话">
-            {
-              getFieldDecorator('phone', {
-                rules: [{require: true, message: '请输入店铺联系电话'}]
-              })(
-                <Input
-                  placeholder="请输入店铺联系电话"
-                ></Input>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="店铺简介">
-            {
-              getFieldDecorator('describe')(
-                <Input
-                  placeholder="请输入店铺简介"
-                ></Input>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="店铺分类">
-            {
-              getFieldDecorator('category', { initialValue: 207 } )(
-                <Select
-                  style={{ width: 120 }}
-                >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="店铺名称">
                 {
-                  categoryOptions.map(item => {
-                    return (
-                      <Option value={item.value} key={item.value}>{item.label}</Option>
-                    )
-                  })
+                  getFieldDecorator('name', {
+                    rules: [{required: true, message: '请输入店铺名称'}]
+                  })(
+                    <Input
+                      placeholder="请输入店铺名称"
+                    ></Input>
+                  )
                 }
-                </Select>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="店铺特点">
-            {
-              getFieldDecorator('feature', { initialValue: [8] })(
-                <Checkbox.Group options={plainOptions}/>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="配送费">
-            {
-              getFieldDecorator('float_delivery_fee', { initialValue: 3 })(
-                <InputNumber min={0}/>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="起送价">
-            {
-              getFieldDecorator('float_minimum_order_amount', { initialValue: 3 })(
-                <InputNumber min={0}/>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="营业开始时间">
-            {
-              getFieldDecorator('opening_hours', { initialValue: moment('00:00', format) })(
-                <TimePicker format={format}/>
-              )
-            }
-          </Form.Item>
-          <Form.Item label="营业结束时间">
-            {
-              getFieldDecorator('closing_hours', { initialValue: moment('00:00', format) })(
-                <TimePicker format={format}/>
-              )
-            }
-          </Form.Item>
-          <Form.Item label={isModify ? '修改店铺头像' : '上传店铺头像'}>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="所在城市">
+                {
+                  getFieldDecorator('city', {
+                    rules: [{required: true, message: '请输入店铺所在城市'}]
+                  })(
+                    <Input
+                      placeholder="请输入店铺所在城市"
+                    ></Input>
+                  )
+                }
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="详细地址">
+                {
+                  getFieldDecorator('address', {
+                    rules: [{required: true, message: '请输入店铺详细地址'}]
+                  })(
+                    <Input
+                      placeholder="请输入店铺详细地址"
+                    ></Input>
+                  )
+                }
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="联系电话">
+                {
+                  getFieldDecorator('phone', {
+                    rules: [{required: true, message: '请输入店铺联系电话'}]
+                  })(
+                    <Input
+                      placeholder="请输入店铺联系电话"
+                    ></Input>
+                  )
+                }
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="店铺简介">
+                {
+                  getFieldDecorator('describe')(
+                    <Input
+                      placeholder="请输入店铺简介"
+                    ></Input>
+                  )
+                }
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="店铺分类">
+                {
+                  getFieldDecorator('category', { initialValue: 207 } )(
+                    <Select
+                      style={{ width: 120 }}
+                    >
+                    {
+                      categoryOptions.map(item => {
+                        return (
+                          <Option value={item.value} key={item.value}>{item.label}</Option>
+                        )
+                      })
+                    }
+                    </Select>
+                  )
+                }
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item label="店铺特点" labelCol={{span: 3}}>
+              {
+                getFieldDecorator('feature', { initialValue: [8] })(
+                  <Checkbox.Group options={plainOptions}/>
+                )
+              }
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="配送费(¥)">
+              {
+                getFieldDecorator('float_delivery_fee', {
+                  rules: [{required: true, message: '请输入配送费'}],
+                  initialValue: 3
+                })(
+                  <InputNumber min={0}/>
+                )
+              }
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="起送价(¥)">
+              {
+                getFieldDecorator('float_minimum_order_amount', {
+                  rules: [{required: true, message: '请输入起送价'}],
+                  initialValue: 3
+                })(
+                  <InputNumber min={0}/>
+                )
+              }
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="营业开始时间">
+              {
+                getFieldDecorator('opening_hours', { initialValue: moment('08:00', format) })(
+                  <TimePicker format={format}/>
+                )
+              }
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="营业结束时间">
+              {
+                getFieldDecorator('closing_hours', { initialValue: moment('10:00', format) })(
+                  <TimePicker format={format}/>
+                )
+              }
+              </Form.Item>
+            </Col>
+          </Row>
+          <Form.Item label={isModify ? '修改店铺头像' : '上传店铺头像'} labelCol={{span:3}}>
             <Upload
               name="file"
               className="avatar-uploader"
@@ -257,7 +304,7 @@ class ShopModal extends Component {
               {
                 imageUrl 
                 ?
-                 <img src={imageUrl} alt="商铺图片"></img>
+                 <img className="shop-img" src={imageUrl} alt="商铺图片"></img>
                 :
                 <Button>
                   <Icon type="upload"/> 选择图片
