@@ -4,6 +4,7 @@ import * as Api from '../../apis/mockApi';
 import Columns from '../../config/columns';
 import ShopModal from '../../componets/shopModal';
 import FoodModal from '../../componets/foodModal';
+import CategoryModal from '../../componets/foodCategoryModal';
 export default class ShopPage extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +12,8 @@ export default class ShopPage extends Component {
       tableData: [],
       currItem: {},
       showShopModal: false,
-      showFoodModal: false
+      showFoodModal: false,
+      showCategory: false,
     }
     this.getShopList();
   }
@@ -37,6 +39,23 @@ export default class ShopPage extends Component {
       } else {
         message.error(res.message);
       }
+    })
+  }
+  submitMenuForm = (form) => {
+    const params = {
+      restaurant_id: this.state.currItem['_id'],
+      ...form
+    }
+    Api.addMenu(params).then(res => {
+      if(res.succeed) {
+        message.success(res.data.message);
+      } else {
+        message.error(res.message);
+      }
+      this.setState({showCategory: false})
+    }).catch(() => {
+      message.error('服务器出错');
+      this.setState({showCategory: false})
     })
   }
   submitShopForm = (params, isModify) => {
@@ -68,28 +87,44 @@ export default class ShopPage extends Component {
       })
     }
   }
-  addFood = (params) => {
+  submitFoodForm = (params) => {
+    Api.addFood(params).then(res => {
+      if(res.succeed) {
+        message.success(res.data.message);
+      } else {
+        message.error(res.message);
+      }
+      this.setState({showFoodModal: false});
+    }).catch(() => {
+      message.error('服务器出错');
+      this.setState({showFoodModal: false});
+    })
+  }
+  addFood = () => {
     this.setState({showFoodModal: true});
   }
-  addOrModifyModal = (option, key) => {
+  addOrModifyModal = (option, record) => {
     this.setState({
       currItem: {}
     })
     this.setState({showShopModal: true});
     if(option === 'modify') {
-      const currItem = this.state.tableData.find(item => {
-        return item['key'] === key;
-      })
       this.setState({
-        currItem: currItem
+        currItem: record
       })
     }
   }
-  onClose = () => {
-    this.setState({showShopModal: false});
+  contrlFoodModal = (record) => {
+    this.setState({
+      currItem: record
+    })
+    this.setState({showFoodModal: true});
   }
-  contrlFoodModal = (visible) => {
-    this.setState({showFoodModal: visible});
+  contrlMenuModal = (record) => {
+    this.setState({
+      currItem: record
+    })
+    this.setState({showCategory: true});
   }
   render() {
     const columns = Columns.shopCol(this);
@@ -97,12 +132,12 @@ export default class ShopPage extends Component {
     return (
       <div id="shop-content">
         <div className="opt-box clearfix">
-          <Button type="primary" className="add-btn" onClick={(e) => this.addOrModifyModal('add', e)}>新增</Button>
+          <Button type="primary" className="add-btn" onClick={(e) => this.addOrModifyModal('add', e)}>新增商铺</Button>
         </div>
-        <Table columns={columns} dataSource={tableData}>
-        </Table>
-        <ShopModal visible={this.state.showShopModal} onClose={this.onClose} submitShopForm={this.submitShopForm} currItem={this.state.currItem}></ShopModal>
-        <FoodModal visible={this.state.showFoodModal} onClose={(e) => this.contrlFoodModal(false, e)}></FoodModal>
+        <Table columns={columns} dataSource={tableData}></Table>
+        <ShopModal visible={this.state.showShopModal} onClose={() => {this.setState({showShopModal: false})}} submitShopForm={this.submitShopForm} currItem={this.state.currItem}></ShopModal>
+        <FoodModal visible={this.state.showFoodModal} onClose={() => this.setState({showFoodModal: false})} submitFoodForm={this.submitFoodForm} shopId={this.state.currItem['_id']}></FoodModal>
+        <CategoryModal visible={this.state.showCategory} onClose={() => {this.setState({showCategory: false})}} submitMenuForm={this.submitMenuForm}></CategoryModal>
       </div>
     )
   }

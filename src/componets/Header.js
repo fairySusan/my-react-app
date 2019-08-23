@@ -19,7 +19,7 @@ class Header extends Component {
             <Col span={21}>
               <div className="brand">
                 <img className="brand-logo" src={logoIcon} alt="logo" width="40" height="29"/>
-                <span className="brand-text">R e a c t</span>
+                <span className="brand-text">M a n a g e</span>
               </div>
             </Col>
             <Col span={3}>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import baseUrl from '../local_config';
 import { Modal, Form, Input, Select, Checkbox, InputNumber, TimePicker, Upload, message, Icon, Button, Row, Col } from 'antd';
-import { stringify } from 'querystring';
 const { Option } = Select;
 let fileList = [];
 
@@ -77,7 +76,6 @@ class ShopModal extends Component {
       return;
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj, imageUrl =>
         this.setState({
           imageUrl,

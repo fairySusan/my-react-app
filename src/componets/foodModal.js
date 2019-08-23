@@ -1,22 +1,87 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Upload, Icon } from 'antd';
+import * as Api from '../apis/mockApi';
+import { Modal, Form, Input, Select, Upload, Icon, InputNumber, message, Button } from 'antd';
+const { Option } = Select;
+let fileList = [];
+
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
+function beforeUpload(file) {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('只允许上传JPG/PNG格式');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('图片大小必须小于2MB!');
+  }
+  if (isJpgOrPng && isLt2M) {
+    fileList.push(file);
+  }
+  return false;
+}
+
 class FoodModal extends Component {
   constructor() {
     super();
     this.state = {
-      imageUrl: ''
+      imageUrl: '',
+      menus: [],
+    }
+  }
+  componentDidMount() {
+  }
+  componentDidUpdate(oldprops) {
+    if(oldprops.visible !== this.props.visible) {
+      if(this.props.visible) {
+        this.getMenus();
+      }
     }
   }
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
-      if (!err) {
+      if (err) {
+        return
       }
+      const formData = new FormData();
+      const f = fileList.pop();
+      formData.append('file', f);
+      formData.append('restaurant_id', this.props.shopId);
+      for(let i in values) {
+        formData.append(i, values[i])
+      }
+      this.props.submitFoodForm(formData);
     });
   }
+  getMenus = () => {
+    Api.getMenu(this.props.shopId).then(res => {
+     this.setState({
+       menus: res.data
+     })
+    })
+  }
+  handleChange = info => {
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      getBase64(info.file.originFileObj, imageUrl =>
+        this.setState({
+          imageUrl,
+          loading: false,
+        }),
+      );
+    }
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const {imageUrl} = this.state;
+    const {imageUrl, menus } = this.state;
     const uploadButton = (
       <div>
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
@@ -53,30 +118,53 @@ class FoodModal extends Component {
               )
             }
           </Form.Item>
-          <Form.Item label="食品价格">
+          <Form.Item label="食品价格(¥)">
             {
               getFieldDecorator('price', {
-                rules: [{require: true, message: '请输入食品价格'}]
+                rules: [{required: true, message: '请输入食品价格'}],
+                initialValue: 3
               })(
-                <Input
-                  placeholder="请输入食品价格"
-                ></Input>
+                <InputNumber min={0}/>
+              )
+            }
+          </Form.Item>
+          <Form.Item label="食品分类">
+            {
+              getFieldDecorator('category_id', {
+                rules: [{required: true, message: '请选择食品分类'}]
+              })(
+                <Select
+                  style={{ width: 120 }}
+                >
+                {
+                  menus.map(item => {
+                    return (
+                      <Option value={item._id} key={item._id}>{item.name}</Option>
+                    )
+                  })
+                }
+              </Select>
               )
             }
           </Form.Item>
           <Form.Item label="食品图片">
             {
-              getFieldDecorator('image_path')(
-                <Upload
-                name="file"
-                listType="picture-card"
-                className="avatar-uploader"
-                showUploadList={false}
-                onChange={this.handleChange}
+              <Upload
+               name="file"
+               className="avatar-uploader"
+               beforeUpload={beforeUpload}
+               onChange={this.handleChange}
               >
-              {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-              </Upload>
-              )
+              {
+               imageUrl 
+               ?
+                <img className="shop-img" src={imageUrl} alt="食物图片"></img>
+               :
+                <Button>
+                  <Icon type="upload"/> 选择图片
+                </Button>
+              }
+             </Upload>
             }
           </Form.Item>
         </Form>

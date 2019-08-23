@@ -10,7 +10,6 @@ class Column extends Component {
         title: '商家名称',
         dataIndex: 'name',
         key: 'name',
-        render: text => <a href="javascript:;">{text}</a>,
       },
       {
         title: '所在城市',
@@ -33,8 +32,9 @@ class Column extends Component {
         render: (text, record) => (
           <span>
             <Button type="primary" onClick={(e) => ctx.deleteShop(record['_id'], e)}>删除</Button>
-            <Button type="primary" onClick={(e) => ctx.addOrModifyModal('modify',record['key'], e)}>修改</Button>
-            <Button type="primary" onClick={(e) => ctx.addFood(record['key'], e)}>添加食品</Button>
+            <Button type="primary" onClick={(e) => ctx.addOrModifyModal('modify',record, e)}>修改</Button>
+            <Button type="primary" onClick={(e) => ctx.contrlFoodModal(record, e)}>添加食品</Button>
+            <Button type="primary" onClick={(e) => ctx.contrlMenuModal(record, e)}>添加食品分类</Button>
           </span>
         ),
       },
