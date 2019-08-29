@@ -39,6 +39,44 @@ class Column extends Component {
         ),
       },
     ]);
+    this.foodCol = (ctx) => ([
+      {
+        title: '食品名称',
+        dataIndex: 'name',
+        key: 'name'
+      },
+      {
+        title: '食品价格(¥)',
+        dataIndex: 'price',
+        key: 'price'
+      },
+      {
+        title: '所属商家',
+        dataIndex: 'shop',
+        key: 'shop',
+        render: (text, record) => (
+          <span>{record.restaurant.name}</span>
+        )
+      },
+      {
+        title: '所属种类',
+        dataIndex: 'category',
+        key: 'category',
+        render: (text, record) => (
+          <span>{record.category.name}</span>
+        )
+      },
+      {
+        title: '操作',
+        key: 'action',
+        render: (text, record) => (
+          <span>
+            <Button type="primary" onClick={(e) => ctx.deleteFood(record['_id'],record['category']['_id'], e)}>删除</Button>
+            <Button type="primary" onClick={(e) => ctx.modifyModal(record['key'], e)}>修改</Button>
+          </span>
+        )
+      }
+    ])
   }
 }
 export default new Column();

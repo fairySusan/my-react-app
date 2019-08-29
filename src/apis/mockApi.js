@@ -10,8 +10,8 @@ export const login = (params) => {
 /**
  *获取商铺列表
  */
-export const getShopList = () => {
-    return http.get(`/shopping/restaurants?time=${new Date().getTime()}`)
+export const getShopList = (id) => {
+    return http.get(`/shopping/restaurants?id=${id}`)
 }
 /**
  * 添加商铺
@@ -32,6 +32,12 @@ export const modifyShop = (params) => {
     return http.post(`/shopping/modifyRestaurants`, params)
 }
 /**
+ * 查询商铺名称
+ */
+export const searchShopNames = (name) => {
+    return http.get(`/shopping/searchRestaurants?name=${name}`)
+}
+/**
  * 添加商铺食品分类
  */
 export const addMenu = (params) => {
@@ -50,8 +56,20 @@ export const addFood = (params) => {
     return http.post('/shopping/restaurants/addFood', params)
 }
 /**
- * 添加获取食品
+ * 获取食品
  */
-export const getFood = () => {
-    return http.get(`/shopping/restaurants/getFood?time=${new Date().getTime()}`)
+export const getFood = (restaurant_id) => {
+    return http.get(`/shopping/restaurants/getFood?restaurant_id=${restaurant_id}`)
+}
+/**
+ * 修改食品
+ */
+export const modifyFood = (params) => {
+    return http.post('/shopping/restaurants/modifyFood', params)
+}
+/**
+ * 删除食品
+ */
+export const deleteFood = (foodId, categoryId) => {
+    return http.get(`/shopping/restaurants/deleteFood?foodId=${foodId}&categoryId=${categoryId}`)
 }

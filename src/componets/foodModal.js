@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as Api from '../apis/mockApi';
+import baseUrl from '../local_config';
 import { Modal, Form, Input, Select, Upload, Icon, InputNumber, message, Button } from 'antd';
 const { Option } = Select;
 let fileList = [];
@@ -31,16 +32,41 @@ class FoodModal extends Component {
     this.state = {
       imageUrl: '',
       menus: [],
+      isModify: false
     }
   }
   componentDidMount() {
   }
   componentDidUpdate(oldprops) {
-    if(oldprops.visible !== this.props.visible) {
-      if(this.props.visible) {
-        this.getMenus();
+    if(oldprops.currItem !== this.props.currItem) {
+      const data = this.props.currItem;
+      this.getMenus(data.restaurant._id);
+      if (data) {
+        this.setState({
+          imageUrl: baseUrl + data.image_path,
+          isModify: true
+        })
+        this.props.form.setFieldsValue({
+          name: data.name,
+          price: data.price,
+          category_id: data.category._id,
+        });
+      }
+    } else {
+      if (oldprops.visible !== this.props.visible) {
+        if (this.props.visible) {
+          this.getMenus(this.props.shopId);
+        }
       }
     }
+  }
+  resetForm = () => {
+    fileList = [];
+    this.props.form.resetFields();
+    this.setState({
+      imageUrl: '',
+      isModify: true
+    })
   }
   onSubmit = (e) => {
     e.preventDefault();
@@ -52,16 +78,19 @@ class FoodModal extends Component {
       const f = fileList.pop();
       formData.append('file', f);
       formData.append('restaurant_id', this.props.shopId);
+      if(this.props.currItem) {
+        formData.append('_id', this.props.currItem._id)
+      }
       for(let i in values) {
         formData.append(i, values[i])
       }
-      this.props.submitFoodForm(formData);
+      this.props.submitFoodForm(formData, this.state.isModify);
     });
   }
-  getMenus = () => {
-    Api.getMenu(this.props.shopId).then(res => {
+  getMenus = (id) => {
+    Api.getMenu(id).then(res => {
      this.setState({
-       menus: res.data
+       menus: res.data,
      })
     })
   }
@@ -82,12 +111,6 @@ class FoodModal extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const {imageUrl, menus } = this.state;
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },

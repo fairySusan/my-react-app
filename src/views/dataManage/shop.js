@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
-import { Table, Button, message } from 'antd';
+import { Table, Button, message, Select } from 'antd';
 import * as Api from '../../apis/mockApi';
 import Columns from '../../config/columns';
 import ShopModal from '../../componets/shopModal';
 import FoodModal from '../../componets/foodModal';
 import CategoryModal from '../../componets/foodCategoryModal';
+const {Option} = Select;
 export default class ShopPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tableData: [],
       currItem: {},
+      searchShopName: '',
+      shopNameOptions: [],
       showShopModal: false,
       showFoodModal: false,
       showCategory: false,
     }
     this.getShopList();
   }
-  getShopList = () => {
-    Api.getShopList().then(res => {
+  getShopList = (id) => {
+    Api.getShopList(id).then(res => {
       if(res.succeed) {
         if (res.data.length > 0) {
           res.data.forEach((element,index) => {
@@ -100,9 +103,6 @@ export default class ShopPage extends Component {
       this.setState({showFoodModal: false});
     })
   }
-  addFood = () => {
-    this.setState({showFoodModal: true});
-  }
   addOrModifyModal = (option, record) => {
     this.setState({
       currItem: {}
@@ -126,12 +126,64 @@ export default class ShopPage extends Component {
     })
     this.setState({showCategory: true});
   }
+  handleSearch = (value) => {
+    if (value) {
+      Api.searchShopNames(value).then(res => {
+        if(res.succeed) {
+          this.setState({
+            shopNameOptions: res.data
+          })
+        }
+      })
+    } else {
+      this.setState({shopNameOptions: []})
+    }
+  }
+  handleChange = (id) => {
+    this.getShopList(id);
+    const shop = this.state.shopNameOptions.find((item) => {
+      return item._id === id;
+    })
+    this.setState({
+      searchShopName: shop && shop.name
+    })
+  }
   render() {
     const columns = Columns.shopCol(this);
-    const { tableData } = this.state;
+    const { tableData, shopNameOptions } = this.state;
     return (
-      <div id="shop-content">
-        <div className="opt-box clearfix">
+      <div id="shop-content" className="manage-content">
+        <div className="opt-box">
+          <div className="filter-item">
+            <label>
+              搜索商家：
+            </label>
+            <Select
+              showSearch
+              allowClear={true}
+              value={this.state.searchShopName}
+              style={{width: '200px'}} 
+              placeholder="请输入商家名称"
+              onSearch={this.handleSearch}
+              onChange={this.handleChange}
+              filterOption={false}
+              defaultActiveFirstOption={false}
+              notFoundContent={null}
+              >
+              {
+                shopNameOptions.map(opt => {
+                  return (
+                    <Option
+                    value={opt._id}
+                    key={opt._id}
+                    >
+                      {opt.name}
+                    </Option>
+                  )
+                })
+              }
+            </Select>
+          </div>
           <Button type="primary" className="add-btn" onClick={(e) => this.addOrModifyModal('add', e)}>新增商铺</Button>
         </div>
         <Table columns={columns} dataSource={tableData}></Table>

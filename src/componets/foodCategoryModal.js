@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Upload, Icon } from 'antd';
+import { Modal, Form, Input} from 'antd';
 
 class FoodCategoryModal extends Component {
-  constructor() {
-    super();
-  }
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err,values) => {

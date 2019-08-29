@@ -35,7 +35,7 @@ class login extends Component {
       <div id="login-page">
         <div className="react-bg">
           <div className="react">
-            <Logo/>
+            MANAGE
           </div>
         </div>
         <div className="login-form">
