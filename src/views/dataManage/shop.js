@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button, message, Select } from 'antd';
 import * as Api from '../../apis/mockApi';
 import Columns from '../../config/columns';
 import ShopModal from '../../componets/shopModal';
 import FoodModal from '../../componets/foodModal';
+import { Table, Button, message, Select } from 'antd';
 import CategoryModal from '../../componets/foodCategoryModal';
 const {Option} = Select;
 export default class ShopPage extends Component {
@@ -11,7 +11,7 @@ export default class ShopPage extends Component {
     super(props);
     this.state = {
       tableData: [],
-      currItem: {},
+      currItem: null,
       searchShopName: '',
       shopNameOptions: [],
       showShopModal: false,

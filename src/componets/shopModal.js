@@ -39,9 +39,8 @@ class ShopModal extends Component {
   componentDidUpdate(oldProps) {
     if(oldProps.currItem !== this.props.currItem) {
       const data = this.props.currItem;
-      console.log('data', data);
       this.resetForm();
-      if (JSON.stringify(data) !== '{}') {
+      if (data) {
         this.setState({
           imageUrl: baseUrl + data.image_path,
           isModify: true
