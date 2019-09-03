@@ -49,7 +49,7 @@ class FoodModal extends Component {
         this.props.form.setFieldsValue({
           name: data.name,
           price: data.price,
-          category_id: data.category._id,
+          menu_id: data.menu._id,
         });
       }
     } else {
@@ -153,7 +153,7 @@ class FoodModal extends Component {
           </Form.Item>
           <Form.Item label="食品分类">
             {
-              getFieldDecorator('category_id', {
+              getFieldDecorator('menu_id', {
                 rules: [{required: true, message: '请选择食品分类'}]
               })(
                 <Select

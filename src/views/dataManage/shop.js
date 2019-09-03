@@ -105,7 +105,7 @@ export default class ShopPage extends Component {
   }
   addOrModifyModal = (option, record) => {
     this.setState({
-      currItem: {}
+      currItem: null
     })
     this.setState({showShopModal: true});
     if(option === 'modify') {
@@ -188,7 +188,7 @@ export default class ShopPage extends Component {
         </div>
         <Table columns={columns} dataSource={tableData}></Table>
         <ShopModal visible={this.state.showShopModal} onClose={() => {this.setState({showShopModal: false})}} submitShopForm={this.submitShopForm} currItem={this.state.currItem}></ShopModal>
-        <FoodModal visible={this.state.showFoodModal} onClose={() => this.setState({showFoodModal: false})} submitFoodForm={this.submitFoodForm} shopId={this.state.currItem['_id']}></FoodModal>
+        <FoodModal visible={this.state.showFoodModal} onClose={() => this.setState({showFoodModal: false})} submitFoodForm={this.submitFoodForm} shopId={this.state.currItem && this.state.currItem['_id']}></FoodModal>
         <CategoryModal visible={this.state.showCategory} onClose={() => {this.setState({showCategory: false})}} submitMenuForm={this.submitMenuForm}></CategoryModal>
       </div>
     )

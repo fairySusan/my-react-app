@@ -60,10 +60,10 @@ class Column extends Component {
       },
       {
         title: '所属种类',
-        dataIndex: 'category',
-        key: 'category',
+        dataIndex: 'menu',
+        key: 'menu',
         render: (text, record) => (
-          <span>{record.category.name}</span>
+          <span>{record.menu.name}</span>
         )
       },
       {

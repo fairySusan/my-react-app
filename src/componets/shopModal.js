@@ -37,9 +37,12 @@ class ShopModal extends Component {
   }
   // 接受props
   componentDidUpdate(oldProps) {
-    if(oldProps.currItem !== this.props.currItem) {
-      const data = this.props.currItem;
+    if (oldProps.visible !== this.props.visible) {
       this.resetForm();
+    }
+    if(oldProps.currItem !== this.props.currItem) {
+      this.resetForm();
+      const data = this.props.currItem;
       if (data) {
         this.setState({
           imageUrl: baseUrl + data.image_path,
@@ -59,7 +62,7 @@ class ShopModal extends Component {
           closing_hours: moment(data.closing_hours, 'HH:mm')
         });
       }
-    }
+    } 
   }
   resetForm = () => {
     fileList = [];
@@ -97,8 +100,10 @@ class ShopModal extends Component {
         const formData = new FormData();
         const f = fileList.pop();
         formData.append('file', f);
-        formData.append('image_path',this.props.currItem.image_path);
-        formData.append('_id', this.props.currItem._id)
+        if (this.state.isModify) {
+          formData.append('image_path',this.props.currItem.image_path);
+          formData.append('_id', this.props.currItem._id)
+        }
         for(let i in values) {
           formData.append(i, values[i])
         }
