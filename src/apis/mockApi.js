@@ -10,8 +10,8 @@ export const login = (params) => {
 /**
  *获取商铺列表
  */
-export const getShopList = (id) => {
-    return http.get(`/shopping/restaurants?id=${id}`)
+export const getShopList = (id, currPage, pageSize) => {
+    return http.get(`/shopping/restaurants?id=${id}&currPage=${currPage}&pageSize=${pageSize}`)
 }
 /**
  * 添加商铺

@@ -3,7 +3,7 @@ import * as Api from '../../apis/mockApi';
 import Columns from '../../config/columns';
 import ShopModal from '../../componets/shopModal';
 import FoodModal from '../../componets/foodModal';
-import { Table, Button, message, Select } from 'antd';
+import { Table, Button, message, Select, Pagination } from 'antd';
 import CategoryModal from '../../componets/foodCategoryModal';
 const {Option} = Select;
 export default class ShopPage extends Component {
@@ -11,6 +11,9 @@ export default class ShopPage extends Component {
     super(props);
     this.state = {
       tableData: [],
+      currPage: 1,
+      pageSize: 5,
+      count: 0,
       currItem: null,
       searchShopName: '',
       shopNameOptions: [],
@@ -20,16 +23,18 @@ export default class ShopPage extends Component {
     }
     this.getShopList();
   }
-  getShopList = (id) => {
-    Api.getShopList(id).then(res => {
+  getShopList = (id, currPage) => {
+    Api.getShopList(id, currPage, this.state.pageSize).then(res => {
       if(res.succeed) {
-        if (res.data.length > 0) {
-          res.data.forEach((element,index) => {
+        const data = res.data.data;
+        if (data.length > 0) {
+          data.forEach((element,index) => {
             element.key = index;
           });
         }
         this.setState({
-          tableData: res.data
+          tableData: data,
+          count: res.data.count
         })
       }
     })
@@ -145,8 +150,15 @@ export default class ShopPage extends Component {
       return item._id === id;
     })
     this.setState({
-      searchShopName: shop && shop.name
+      searchShopName: shop && shop.name,
+      currPage: 1,
     })
+  }
+  onPageChange = (currPage) => {
+    this.setState({
+      currPage: currPage
+    });
+    this.getShopList(undefined, currPage);
   }
   render() {
     const columns = Columns.shopCol(this);
@@ -186,7 +198,8 @@ export default class ShopPage extends Component {
           </div>
           <Button type="primary" className="add-btn" onClick={(e) => this.addOrModifyModal('add', e)}>新增商铺</Button>
         </div>
-        <Table columns={columns} dataSource={tableData}></Table>
+        <Table columns={columns} dataSource={tableData} pagination={false}></Table>
+        <Pagination total={this.state.count} current={this.state.currPage} onChange={this.onPageChange} pageSize={this.state.pageSize}></Pagination>
         <ShopModal visible={this.state.showShopModal} onClose={() => {this.setState({showShopModal: false})}} submitShopForm={this.submitShopForm} currItem={this.state.currItem}></ShopModal>
         <FoodModal visible={this.state.showFoodModal} onClose={() => this.setState({showFoodModal: false})} submitFoodForm={this.submitFoodForm} shopId={this.state.currItem && this.state.currItem['_id']}></FoodModal>
         <CategoryModal visible={this.state.showCategory} onClose={() => {this.setState({showCategory: false})}} submitMenuForm={this.submitMenuForm}></CategoryModal>
