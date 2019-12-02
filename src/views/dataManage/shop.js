@@ -21,6 +21,8 @@ export default class ShopPage extends Component {
       showFoodModal: false,
       showCategory: false,
     }
+  }
+  componentDidMount() {
     this.getShopList();
   }
   getShopList = (id, currPage) => {
@@ -167,13 +169,9 @@ export default class ShopPage extends Component {
       <div id="shop-content" className="manage-content">
         <div className="opt-box">
           <div className="filter-item">
-            <label>
-              搜索商家：
-            </label>
             <Select
               showSearch
               allowClear={true}
-              value={this.state.searchShopName}
               style={{width: '200px'}} 
               placeholder="请输入商家名称"
               onSearch={this.handleSearch}

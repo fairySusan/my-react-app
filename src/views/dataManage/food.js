@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import * as Api from '../../apis/mockApi';
 import Columns from '../../config/columns';
 import FoodModal from '../../componets/foodModal';
-import {Table, message, Select} from 'antd';
+import {Table, message, Select, Pagination} from 'antd';
 const {Option} = Select;
 export default class FoodPage extends Component {
   constructor() {
     super();
     this.state = {
+      count: 0,
+      currPage: 1,
+      pageSize: 5,
       tableData: [],
       shopNameOptions: [],
       currItem: null,
@@ -25,7 +28,8 @@ export default class FoodPage extends Component {
           element.key = index;
         });
         this.setState({
-          tableData: res.data
+          tableData: res.data,
+          count: res.data.count
         })
       }
     })
@@ -74,6 +78,12 @@ export default class FoodPage extends Component {
         message.error(res.message);
       }
     })
+  }
+  onPageChange = (currPage) => {
+    this.setState({
+      currPage: currPage
+    });
+    this.getFoods(undefined, currPage);
   }
   handleSearch = (value) => {
     if (value) {
@@ -134,7 +144,8 @@ export default class FoodPage extends Component {
             </Select>
           </div>
         </div>
-        <Table columns={columns} dataSource={tableData}></Table>
+        <Table columns={columns} dataSource={tableData} pagination={false}></Table>
+        <Pagination total={this.state.count} current={this.state.currPage} onChange={this.onPageChange} pageSize={this.state.pageSize}></Pagination>
         <FoodModal currItem={currItem} visible={this.state.showFoodModal} onClose={() => this.setState({showFoodModal: false})} submitFoodForm={this.submitFoodForm}></FoodModal>
       </div>
     )

@@ -23,6 +23,6 @@ h1 {
   height: 100%;
 }
 .content {
-  overflow: scroll;
   height: 100%;
+  padding: 10px;
 }

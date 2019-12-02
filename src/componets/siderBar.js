@@ -32,7 +32,7 @@ class siderBar extends Component {
       },
       {
         label: '数据管理',
-        key: 'manage',
+        key: '/manage',
         icon: 'desktop',
         children: [
           {
@@ -69,7 +69,7 @@ class siderBar extends Component {
       },
       {
         label: '设置中心',
-        key: 'set',
+        key: '/set',
         icon: 'setting',
         children: [
           {
@@ -115,7 +115,7 @@ class siderBar extends Component {
               item1.children.map((item2, index) => {
                 return (
                   <Menu.Item key={item2.key}>
-                  <Link to={`/${item1.key}${item2.key}`}>
+                  <Link to={`${item1.key}${item2.key}`}>
                     <Icon type={item2.icon} />
                     <span>{item2.label}</span>
                   </Link>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button} from 'antd';
+import {Button, Icon} from 'antd';
 
 class Column extends Component {
   constructor() {
@@ -31,9 +31,22 @@ class Column extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Button type="primary" onClick={(e) => ctx.deleteShop(record['_id'], e)}>删除</Button>
-            <Button type="primary" onClick={(e) => ctx.addOrModifyModal('modify',record, e)}>修改</Button>
+            <Icon
+              type="delete"
+              style={{fontSize: '18px'}}
+              onClick={(e) => ctx.deleteShop(record['_id'], e)}>
+              删除
+            </Icon>
+            <span className="action-split"></span>
+            <Icon
+             type="edit"
+             style={{fontSize: '18px'}}
+             onClick={(e) => ctx.addOrModifyModal('modify',record, e)}>
+             修改
+            </Icon>
+            <span className="action-split"></span>
             <Button type="primary" onClick={(e) => ctx.contrlFoodModal(record, e)}>添加食品</Button>
+            <span className="action-split"></span>
             <Button type="primary" onClick={(e) => ctx.contrlMenuModal(record, e)}>添加食品分类</Button>
           </span>
         ),
@@ -71,8 +84,17 @@ class Column extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Button type="primary" onClick={(e) => ctx.deleteFood(record['_id'],record['category']['_id'], e)}>删除</Button>
-            <Button type="primary" onClick={(e) => ctx.modifyModal(record['key'], e)}>修改</Button>
+            <Icon 
+              type="delete"
+              style={{fontSize: '18px'}}
+              onClick={(e) => ctx.deleteFood(record['_id'],record['category']['_id'], e)}
+            >删除</Icon>
+            <span className="action-split"></span>
+            <Icon
+            type="edit"
+            style={{fontSize: '18px'}}
+            onClick={(e) => ctx.modifyModal(record['key'], e)}>
+            修改</Icon>
           </span>
         )
       }

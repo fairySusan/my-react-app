@@ -15,7 +15,7 @@ app.all('*', function (req, res, next) {
 /**
  * 登录
  */
-app.post('/login',(req, res) => {
+app.post('/admin/login',(req, res) => {
     const result = {
         username: req.body.username,
         role: 'manager',

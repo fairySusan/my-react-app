@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import echarts from 'echarts';
 import ReactEcharts from 'echarts-for-react';
 class Charts extends Component {
   getOptions = () => {

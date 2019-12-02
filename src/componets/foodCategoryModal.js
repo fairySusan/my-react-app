@@ -34,7 +34,7 @@ class FoodCategoryModal extends Component {
           <Form.Item label="种类名称">
             {
               getFieldDecorator('name', {
-                rules: [{require: true, message: '请输入种类名称'}]
+                rules: [{required: true, message: '请输入种类名称'}]
               })(
                 <Input
                   placeholder="请输入种类名称"
