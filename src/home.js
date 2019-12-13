@@ -10,6 +10,7 @@ import UserManange from './views/user-manage';
 import UserInfo from './componets/UserInfo';
 import ShopPage from './views/dataManage/shop';
 import FoodPage from './views/dataManage/food';
+import OrderPage from './views/dataManage/order';
 import Editor from './views/editor';
 import Charts from './views/charts';
 
@@ -28,6 +29,7 @@ class Home extends Component {
                     <Route path="/" exact component={Profile}></Route>
                     <Route path="/manage/shop" component={ShopPage}></Route>
                     <Route path="/manage/food" component={FoodPage}></Route>
+                    <Route path="/manage/order" component={OrderPage}></Route>
                     <Route path="/chart" component={Charts}></Route>
                     <Route path="/editor" component={Editor}></Route>
                     <Route path="/set/userManage" component={UserManange}></Route>

@@ -98,6 +98,43 @@ class Column extends Component {
           </span>
         )
       }
+    ]);
+    this.orderCol = () => ([
+      {
+        title: '订单编号',
+        dataIndex: 'id',
+        key: 'id'
+      },
+      {
+        title: '客户姓名',
+        dataIndex: 'client_name',
+        key: 'client_name'
+      },
+      {
+        title: '客户电话',
+        dataIndex: 'client_phone',
+        key: 'client_phone',
+      },
+      {
+        title: '接单商家',
+        dataIndex: 'shop_name',
+        key: 'shop_name'
+      },
+      {
+        title: '商家电话',
+        dataIndex: 'shop_name',
+        key: 'shop_name',
+      },
+      {
+        title: '商品数量',
+        dataIndex: 'foods_count',
+        key: 'foods_count'
+      },
+      {
+        title: '下单商品',
+        dataIndex: 'order_foods',
+        key: 'order_foods'
+      }
     ])
   }
 }

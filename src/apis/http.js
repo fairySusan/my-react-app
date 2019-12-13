@@ -5,7 +5,8 @@ const http  = axios.create({
   timeout: 30000,
   validateStatus(status) {
     return status < 500
-  }
+  },
+  withCredentials: true // 允许携带cookie
 })
 // 请求取消标识
 const CancelToken = axios.CancelToken;
